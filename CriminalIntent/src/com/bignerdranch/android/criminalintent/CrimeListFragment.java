@@ -34,6 +34,9 @@ public class CrimeListFragment extends ListFragment {
 		Crime crime = ((CrimeAdapter)getListAdapter()).getItem(position);
 		
 		Intent intent = new Intent(getActivity(), CrimeActivity.class);
+		
+		// pass crime_id as serializable object
+		intent.putExtra(CrimeFragment.CRIME_ID, crime.getId());
 		startActivity(intent);
 	}
 	

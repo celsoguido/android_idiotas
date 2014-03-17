@@ -1,5 +1,7 @@
 package com.bignerdranch.android.criminalintent;
 
+import java.util.UUID;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -17,17 +19,40 @@ import android.widget.EditText;
 
 public class CrimeFragment extends Fragment {
 
+	public static final String CRIME_ID = 
+			"com.bignerdranch.android.criminalintent.CRIME_ID";
+	
 	private Crime mCrime;
 	private EditText mEditText;
 	private Button mCrimeDateButton;
 	private CheckBox mCrimeSolvedCheckBox;
 
+	/**
+	 * method to set the arguments of an instance of CrimeFragment.
+	 * This method is called after creating the fragment and before
+	 * it is attached to an activity. 
+	 * */
+	public static CrimeFragment newInstance(UUID crimeId) {
+		
+		// create the bundle and attach crime id
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(CRIME_ID, crimeId);
+		
+		// put bundle in fragment's arguments
+		CrimeFragment crimeFragment = new CrimeFragment();
+		crimeFragment.setArguments(bundle);
+		
+		return crimeFragment;
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+
+		UUID crimeId = (UUID) getArguments().getSerializable(CRIME_ID);
 		
-		mCrime = new Crime();
+		mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
 	}
 
 	@Override
@@ -46,14 +71,23 @@ public class CrimeFragment extends Fragment {
 		mEditText = (EditText) v.findViewById(R.id.crime_title);
 		
 		mCrimeDateButton = (Button) v.findViewById(R.id.crime_date);
-
-		mCrimeDateButton.setText(
-				DateFormat.format("EEEE, LLL d, yyyy", mCrime.getDate()));
 		mCrimeDateButton.setEnabled(false);
 		
 		mCrimeSolvedCheckBox = (CheckBox) v.findViewById(R.id.crime_solved);
 
 		setUpListeners();
+		
+		setUpContent();
+	}
+
+	private void setUpContent() {
+		
+		mEditText.setText(mCrime.getTitle());
+		
+		mCrimeDateButton.setText(
+				DateFormat.format("EEEE, LLL d, yyyy", mCrime.getDate()));
+		
+		mCrimeSolvedCheckBox.setChecked(mCrime.isSolved());
 	}
 	
 	private void setUpListeners() {
