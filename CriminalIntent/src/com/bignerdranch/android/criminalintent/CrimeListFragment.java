@@ -38,6 +38,14 @@ public class CrimeListFragment extends ListFragment {
 		startActivity(intent);
 	}
 	
+	/**
+	 * 
+	 * You cannot assume that your activity will be stopped when another activity is 
+	 * in front of it. If the other activity is transparent, your activity may just 
+	 * be paused. If your activity is paused and your update code is in onStart(), 
+	 * then the list will not be reloaded. In general, onResume() is the safest 
+	 * place to take action to update a fragment’s view. 
+	 * */
 	@Override
 	public void onResume() {
 
