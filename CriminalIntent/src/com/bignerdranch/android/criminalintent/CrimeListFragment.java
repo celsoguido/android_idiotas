@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 public class CrimeListFragment extends ListFragment {
 
-	private static final String TAG = "CrimeListFragment";
-	
 	private ArrayList<Crime> mCrimes;
 	
 	@Override
@@ -40,6 +38,13 @@ public class CrimeListFragment extends ListFragment {
 		startActivity(intent);
 	}
 	
+	@Override
+	public void onResume() {
+
+		super.onResume();
+		((CrimeAdapter)getListAdapter()).notifyDataSetChanged();
+	}
+
 	private class CrimeAdapter extends ArrayAdapter<Crime> {
 		
 		public CrimeAdapter(ArrayList<Crime> crimes) {
