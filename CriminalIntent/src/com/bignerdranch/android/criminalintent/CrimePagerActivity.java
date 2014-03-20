@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 
 public class CrimePagerActivity extends FragmentActivity {
 
@@ -63,8 +64,41 @@ public class CrimePagerActivity extends FragmentActivity {
 			
 			if(crimeId.equals(crime.getId())) {
 				mViewPager.setCurrentItem(i);
+				
+				setActivityTitle(crime.getTitle());
 				break;
 			}
-		} 
+		}
+		
+		// set the crime's title to Activity's title
+		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int index) {
+				
+				// get crime of the postion 'index'
+				Crime crime = mCrimes.get(index);
+				
+				// set activity's title to crime's title
+				setActivityTitle(crime.getTitle());	
+			}
+			
+			@Override
+			public void onPageScrolled(int index, float arg1, int arg2) {
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int index) {
+			}
+		});
+	}
+	
+	private void setActivityTitle(String title) {
+		
+		if(title != null) {
+			
+			// set activity's title to crime's title
+			setTitle(title);
+		}	
 	}
 }
